@@ -3,6 +3,7 @@ import os
 from flask import Flask, render_template
 from flask_session import Session
 
+
 def create_app():
     """
     Application factory function.
@@ -29,6 +30,7 @@ def create_app():
         return render_template("index.html")
     
     return app
+
 
 # Run the app only if this file is executed directly
 if __name__ == "__main__":
