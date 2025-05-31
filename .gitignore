@@ -1,0 +1,26 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+.venv/
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Instance folder and configuration secrets
+instance/*.db
+instance/config.py
+.env
+
+# Sessions data
+flask_session/
+
+# Linux metadata files
+.DS_Store
+
+# SQLite backup files
+*.db-journal
+*.sqlite3
