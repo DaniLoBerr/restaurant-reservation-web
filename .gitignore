@@ -11,7 +11,7 @@ __pycache__/
 *.tmp
 
 # Instance folder and configuration secrets
-instance/*.db
+instance/*.db*
 instance/config.py
 .env
 
