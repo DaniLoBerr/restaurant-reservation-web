@@ -2,11 +2,13 @@
 CREATE TABLE users (
     id INTEGER,
     username TEXT NOT NULL UNIQUE,
+    role TEXT NOT NULL CHECK(role IN ('admin', 'user')) DEFAULT 'user',
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     phone_number TEXT NOT NULL,
     email TEXT NOT NULL,
     hash TEXT NOT NULL UNIQUE,
+    created_at NUMERIC NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(id)
 );
 
@@ -34,7 +36,7 @@ CREATE TABLE reservations (
     date NUMERIC NOT NULL,
     slot_id INTEGER,
     party_size INTEGER NOT NULL CHECK(party_size BETWEEN 1 AND 16),
-    created_at DATETIME NOT NULL DEFAULT CURRENT_DATETIME,
+    created_at NUMERIC NOT NULL DEFAULT CURRENT_TIMESTAMP,
     status TEXT NOT NULL CHECK(status IN ('confirmed', 'cancelled')),
     PRIMARY KEY(id),
     FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -51,9 +53,9 @@ CREATE TABLE reservation_tables (
 );
 
 --Initial data inserts
-INSERT INTO users (username, first_name, last_name, phone_number, email, hash)
+INSERT INTO users (username, role, first_name, last_name, phone_number, email, hash)
 VALUES
-('admin', 'Daniel', 'López', '+34 666666666', 'gobernador2003@gmail.com', '$2y$10$jokMcaZ2yUHcRRM.PMJPFOav0HudkpvN56vDKUBI8mntnzsydxsia');
+('admin', 'admin', 'Daniel', 'López', '+34 666666666', 'gobernador2003@gmail.com', '$2y$10$jokMcaZ2yUHcRRM.PMJPFOav0HudkpvN56vDKUBI8mntnzsydxsia');
 
 INSERT INTO tables (name, capacity)
 VALUES
