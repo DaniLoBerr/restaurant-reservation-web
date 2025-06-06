@@ -189,6 +189,16 @@ def login():
     return render_template("login.html")
 
 
+@app.route("/logout")
+def logout():
+    """
+    Log out a user session
+    """
+    # Forget any existing session
+    session.clear()
+    return redirect(url_for("index"))
+
+
 # Run the app only when this file is executed directly
 if __name__ == "__main__":
     app.run()
