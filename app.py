@@ -6,7 +6,7 @@ from flask import (
 )
 from flask_session import Session
 from re import fullmatch
-from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
 # Create Flask app instance with instance-relative config folder
@@ -148,6 +148,45 @@ def register():
         flash(error)
 
     return render_template("register.html")
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    """
+    Log in a user.
+    """
+    # Forget any existing session
+    session.clear()
+
+    if request.method == "POST":
+
+        # Get form data
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        error = None
+
+        # Get user data from the database
+        db = get_db_connection()
+        user = db.execute(
+            "SELECT id, hash FROM users WHERE username = ?", (username,)
+        ).fetchone()
+        db.close()
+
+        # Validate credentials
+        if user is None:
+            error = "Incorrect username."
+        elif not check_password_hash(user["hash"], password):
+            error = "Incorrect password."
+
+        # Log in the user
+        if error is None:
+            session["user_id"] = user["id"]
+            return redirect(url_for("index"))
+
+        flash(error)
+
+    return render_template("login.html")
 
 
 # Run the app only when this file is executed directly
