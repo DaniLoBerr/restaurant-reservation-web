@@ -5,6 +5,7 @@ from flask import (
     flash, Flask, redirect, render_template, request, session, url_for
 )
 from flask_session import Session
+from functools import wraps
 from re import fullmatch
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -30,6 +31,18 @@ def get_db_connection():
     conn = sqlite3.connect(app.config["DATABASE"])
     conn.row_factory = sqlite3.Row
     return conn
+
+
+def login_required(view):
+    """
+    Decorate routes to require login.
+    """
+    @wraps(view)
+    def wrapped_view(*args, **kwargs):
+        if session["user_id"] is None:
+            return redirect(url_for("login"))
+        return view(*args, **kwargs)
+    return wrapped_view
 
 
 # Routes
