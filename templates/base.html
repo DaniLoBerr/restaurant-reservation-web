@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}{% endblock %}</title>
+        <title>{% block title %}{% endblock %} - Restaurant Reservation Web</title>
 
         <!-- Bootstrap CSS -->
         <link
@@ -15,8 +16,32 @@
         <!-- Custom CSS -->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
+
     <body>
-        {% block body %}{% endblock %}
+    
+        <header>
+            <h1>Restaurant Reservation Web</h1>
+            <nav>
+                <ul>
+                    {% if session["user_id"] %}
+                        <li><span><!-- TODO: username --> </span></li>
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                        <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('register') }}">Register</a></li>
+                        <li><a href="{{ url_for('login') }}">Log In</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
+
+        {% for message in get_flashed_messages() %}
+            <section class="flash">{{ message }}</section>
+        {% endfor %}
+
+        <main>
+            {% block main %}{% endblock %}
+        </main>
 
         <!-- Bootstrap JS -->
         <script
@@ -27,5 +52,7 @@
 
         <!-- Custom JS -->
         <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
     </body>
+
 </html>
