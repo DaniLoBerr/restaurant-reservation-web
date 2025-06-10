@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <h2>{% block title %}Log In{% endblock %}</h2>
+
+    <form action="{{ url_for('login') }}" method="post">
+        <!-- Username -->
+        <input
+            autocomplete="off"
+            autofocus
+            maxlength="16"
+            minlength="6"
+            name="username"
+            pattern="^[a-zA-Z0-9]{6,16}$"
+            placeholder="Username"
+            required
+            type="text"
+        >
+
+        <!-- Password -->
+        <input
+            maxlength="30"
+            minlength="8"
+            name="password"
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,30}$"
+            placeholder="Password"
+            required
+            type="password"
+        >
+
+        <!-- Submit button -->
+        <button type="submit">Log In</button>
+    
+    </form>
+{% endblock %}
