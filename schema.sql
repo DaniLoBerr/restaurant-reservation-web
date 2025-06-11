@@ -55,7 +55,7 @@ CREATE TABLE reservation_tables (
 --Initial data inserts
 INSERT INTO users (username, role, first_name, last_name, phone_number, email, hash)
 VALUES
-('admin', 'admin', 'Daniel', 'López', '+34 666666666', 'gobernador2003@gmail.com', '$2y$10$jokMcaZ2yUHcRRM.PMJPFOav0HudkpvN56vDKUBI8mntnzsydxsia');
+('admin1', 'admin', 'Daniel', 'López', '+34 666666666', 'gobernador2003@gmail.com', 'scrypt:32768:8:1$JuJt6ANrB87HDPQ5$cfccebf538da190b522b6780fa7855cbfd62eb9613846c13519b322a70a38a39b539b24a5bcf73c93eefdd2da366905630166d6cdde4d2712bdc789991319609');
 
 INSERT INTO tables (name, capacity)
 VALUES

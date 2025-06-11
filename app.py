@@ -92,15 +92,15 @@ def register():
             error = "Password confirmation is required."
 
         # Validation regex patterns
-        regex_username = r"^[a-zA-Z0-9]{6,16}$"
+        regex_username = r"^[a-zA-Z0-9_]{3,20}$"
         regex_name = r"^[A-Za-zÀ-ÖØ-öø-ÿ' -]{2,30}$"
         regex_phone = r"^\+?\d[\d\s\-\(\)]{8,}$"
-        regex_password = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,30}$"
+        regex_password = r"^(?=.*[A-Za-z])(?=.*\d).{6,30}$"
 
         # Format validation
         if not error and not fullmatch(regex_username, username):
             error = (
-                "Username must be 6-16 characters, letters and numbers only."
+                "Username must be 3-20 characters, letters, numbers and underscores only."
             )
         elif not error and (
             not fullmatch(regex_name, first_name)
@@ -114,9 +114,8 @@ def register():
             error = "Phone number must be valid."
         elif not error and not fullmatch(regex_password, password):
             error = (
-                "Password must be 8-30 characters long and include at least "
-                "one uppercase letter, one lowercase letter, one digit, and "
-                "one special character."
+                "Password must be 6-30 characters long and include at least "
+                "one letter and one digit."
             )
         elif not error and password != confirmation:
             error = "Password and confirmation must match."
