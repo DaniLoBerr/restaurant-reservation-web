@@ -24,7 +24,7 @@
             <nav>
                 <ul>
                     {% if session["user_id"] %}
-                        <li><span><!-- TODO: username --> </span></li>
+                        <li><span>Hi, {{ session["username"] }}!</span></li>
                         <li><a href="{{ url_for('index') }}">Home</a></li>
                         <li><a href="{{ url_for('logout') }}">Log Out</a></li>
                     {% else %}

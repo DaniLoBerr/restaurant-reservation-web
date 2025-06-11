@@ -151,6 +151,7 @@ def register():
                     "SELECT id FROM users WHERE username = ?", (username,)
                 ).fetchone()
                 session["user_id"] = user["id"]
+                session["username"] = username
 
                 return redirect(url_for("index"))
             
@@ -194,6 +195,7 @@ def login():
         # Log in the user
         if error is None:
             session["user_id"] = user["id"]
+            session["username"] = username
             return redirect(url_for("index"))
 
         flash(error)
