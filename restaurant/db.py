@@ -39,3 +39,9 @@ def close_db(e=None):
     db = g.pop("db", None)
     if db is not None:
         db.close()
+
+
+def init_app(app):
+    """Register dababase teardown and CLI command with a given app."""
+    app.teardown_appcontext(close_db)
+    app.cli.add_command(init_db_command)
