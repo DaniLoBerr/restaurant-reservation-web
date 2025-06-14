@@ -1,3 +1,9 @@
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS tables;
+DROP TABLE IF EXISTS time_slots;
+DROP TABLE IF EXISTS reservations;
+DROP TABLE IF EXISTS reservation_tables;
+
 -- Users of the system
 CREATE TABLE users (
     id INTEGER,

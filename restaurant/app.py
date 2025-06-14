@@ -21,18 +21,6 @@ Session(app)
 
 
 # Helper functions
-def get_db_connection():
-    """
-    Create and return  a connection to the SQLite database.
-
-    Rows will be returned as dictionaries for easier access by column
-    name.
-    """
-    conn = sqlite3.connect(app.config["DATABASE"])
-    conn.row_factory = sqlite3.Row
-    return conn
-
-
 def login_required(view):
     """
     Decorate routes to require login.
