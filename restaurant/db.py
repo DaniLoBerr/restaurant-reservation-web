@@ -11,7 +11,7 @@ def get_db():
     Returns rows of dictionaries for easier access by column name.
     """
     if "db" not in g:
-        sqlite3.connect(current_app.config["DATABASE"])
+        g.db = sqlite3.connect(current_app.config["DATABASE"])
         g.db.row_factory = sqlite3.Row
     return g.db
 
@@ -20,7 +20,7 @@ def init_db():
     """Initialize a new database by executing the schema.sql script."""
     db = get_db()
     with current_app.open_resource("schema.sql") as schema:
-        db.executescript(schema.read.decode("utf-8"))
+        db.executescript(schema.read().decode("utf-8"))
 
 
 @click.command("init-db")
