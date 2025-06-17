@@ -104,3 +104,63 @@ def register():
         flash(error)
 
     return render_template("auth/register.html")
+
+
+@bp.route("/login", methods=["GET", "POST"])
+def login():
+    """Log in a user by validating submitted credentials.
+
+    If accessed via GET, render the login form. If accessed via POST,
+    check the submitted username and password against the database.
+    If valid, store the user ID in the session and redirect to the
+    index page. Otherwise, flash an error message and re-render the
+    form.
+    """
+    if request.method == "POST":
+
+        # Get form data
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        error = None
+
+        # Get user data from the database
+        db = get_db()
+        user = db.execute(
+            "SELECT id, hash FROM users WHERE username = ?", (username,)
+        ).fetchone()
+
+        # Validate credentials
+        if user is None:
+            error = "Incorrect username."
+        elif not check_password_hash(user["hash"], password):
+            error = "Incorrect password."
+
+        # Log in the user
+        if error is None:
+            session.clear()
+            session["user_id"] = user["id"]
+            return redirect(url_for("index"))
+
+        flash(error)
+
+    return render_template("auth/login.html")
+
+
+@bp.before_app_request
+def load_logged_in_user():
+    """Load the logged-in user from the database into g.user.
+    
+    If no user is logged in (no user_id in session), g.user is set to
+    None.
+    Otherwise, query the database for the user and store the result in
+    g.user.
+    """
+    user_id = session.get("user_id")
+
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = get_db().execute(
+            "SELECT * FROM users WHERE id = ?", (user_id,)
+        ).fetchone
