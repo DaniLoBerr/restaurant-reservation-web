@@ -23,13 +23,12 @@
             <h1>Restaurant Reservation Web</h1>
             <nav>
                 <ul>
-                    {% if session["user_id"] %}
-                        <li><span>Hi, {{ session["username"] }}!</span></li>
-                        <li><a href="{{ url_for('index') }}">Home</a></li>
-                        <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+                    {% if g.user %}
+                        <li><span>Hi, {{ g.user["username"] }}</span></li>
+                        <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
                     {% else %}
-                        <li><a href="{{ url_for('register') }}">Register</a></li>
-                        <li><a href="{{ url_for('login') }}">Log In</a></li>
+                        <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                        <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
                     {% endif %}
                 </ul>
             </nav>
