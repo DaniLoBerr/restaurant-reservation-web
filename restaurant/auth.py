@@ -14,10 +14,14 @@ bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 @bp.route("/register", methods=["GET", "POST"])
 def register():
-    """Register a new user."""
-    # Forget any existing session
-    session.clear()
-
+    """Handle user registration via form.
+    
+    If accessed via GET, render the registration form.
+    If accessed via POST, validate the submitted data. If valid,
+    insert a new user into the database and redirect to the login
+    page. If validation fails, flash an error message and re-render
+    the form.
+    """
     if request.method == "POST":
         # Get form data
         username = request.form.get("username")
