@@ -6,14 +6,25 @@ from flask import current_app, g
 
 
 def get_db():
-    """Open a new database connection for the current request if needed.
-    
-    Returns rows of dictionaries for easier access by column name.
+    """Return a database connection stored in the application context.
+
+    If a connection does not exist yet, create one and set the row
+    factory to return rows as dictionaries.
     """
     if "db" not in g:
         g.db = sqlite3.connect(current_app.config["DATABASE"])
         g.db.row_factory = sqlite3.Row
     return g.db
+
+
+def close_db(e=None):
+    """Close the database connection at the end of the request.
+    
+    Called automatically on application context teardown.
+    """
+    db = g.pop("db", None)
+    if db is not None:
+        db.close()
 
 
 def init_db():
@@ -25,23 +36,19 @@ def init_db():
 
 @click.command("init-db")
 def init_db_command():
-    """Clear existing data and initialize a new database."""
+    """Clear existing data and initialize a new database.
+    
+    The command is registered with the Flask CLI.
+    """
     init_db()
     click.echo("Initialized the database.")
 
 
-def close_db(e=None):
-    """Close the database connection if it was opened during the request.
-    
-    This function is registered with the app context teardown so that
-    the connection is always properly closed after each request.
-    """
-    db = g.pop("db", None)
-    if db is not None:
-        db.close()
-
-
 def init_app(app):
-    """Register dababase teardown and CLI command with a given app."""
+    """Register dababase functions with the Flask application.
+    
+    Adds a CLI command to initialize the database.
+    Closes the database connection after each request.
+    """
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
