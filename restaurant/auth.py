@@ -8,7 +8,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from restaurant.db import get_db
 
-
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
@@ -168,3 +167,13 @@ def load_logged_in_user():
         g.user = get_db().execute(
             "SELECT * FROM users WHERE id = ?", (user_id,)
         ).fetchone
+
+
+@bp.route("/logout")
+def logout():
+    """Log out the current user.
+    
+    Clear the session and redirect to the index page.
+    """
+    session.clear()
+    return redirect(url_for("index"))
