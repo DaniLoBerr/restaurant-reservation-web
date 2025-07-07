@@ -18,21 +18,18 @@
     </head>
 
     <body>
-    
-        <header>
-            <h1>Restaurant Reservation Web</h1>
-            <nav>
-                <ul>
-                    {% if g.user %}
-                        <li><span>Hi, {{ g.user["username"] }}</span></li>
-                        <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
-                    {% else %}
-                        <li><a href="{{ url_for('auth.register') }}">Register</a></li>
-                        <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </header>
+        <nav class="navbar">
+            <h1 class="logo">Restaurant Reservation Web</h1>
+            <ul class="links">
+                {% if g.user %}
+                    <li><span>Hi, {{ g.user["username"] }}</span></li>
+                    <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                    <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+                {% endif %}
+            </ul>
+        </nav>
 
         {% for message in get_flashed_messages() %}
             <section class="flash">{{ message }}</section>
