@@ -52,3 +52,33 @@
 .navbar .links li a:active {
     color: #005b96;
 }
+
+
+/* Auth  */
+
+main,
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+main h2 {
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
+form {
+    gap: 20px;
+}
+
+.info {
+    font-style: italic;
+}
+
+form input,
+button {
+    padding: 10px;
+    border-radius: 5px;
+}
