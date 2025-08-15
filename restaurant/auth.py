@@ -35,7 +35,7 @@ def login_required(view):
     """Decorator to ensure login before accessing a route.
     
     Preserve the original view's metadata. If no user is logged in
-    (i.e., 'iser_id' not in session), redirects to the login page.
+    (i.e., 'user_id' not in session), redirects to the login page.
     Otherwise, continues with the requested view.
     """
     @wraps(view)

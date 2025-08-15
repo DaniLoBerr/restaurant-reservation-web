@@ -45,7 +45,7 @@ def init_db_command():
 
 
 def init_app(app):
-    """Register dababase functions with the Flask application.
+    """Register database functions with the Flask application.
     
     Adds a CLI command to initialize the database.
     Closes the database connection after each request.

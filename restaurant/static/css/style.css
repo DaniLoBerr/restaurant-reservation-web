@@ -53,6 +53,15 @@
     color: #005b96;
 }
 
+/* Flash messages */
+.flash {
+    font-size: larger;
+    font-weight: bold;
+    text-align: center;
+    background-color: red;
+    padding: 2vh;
+}
+
 
 /* Auth  */
 
