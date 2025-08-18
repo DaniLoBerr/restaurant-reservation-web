@@ -29,3 +29,50 @@ def index():
         "ORDER BY reservations.date ASC, time_slots.label ASC"
     ).fetchall()
     return render_template("reservation/index.html", reservations=reservations)
+
+
+@bp.route("/create", methods=("GET", "POST"))
+@login_required
+def create():
+    if request.method == "POST":
+        # Get form data
+        date = request.form.get("date")
+        time = request.form.get("slot_id")
+        party = request.form.get("party_size")
+        
+        error = None
+
+        # Ensure data was submitted
+        if not date:
+            error = "Date is required"
+        elif not time:
+            error = "Time is required"
+        elif not party:
+            error = "Number of Guests is required"
+
+        # Insert new reservation into the database
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                "INSERT INTO reservations(" \
+                    "user_id, " \
+                    "date, " \
+                    "slot_id, " \
+                    "party_size, " \
+                    "status " \
+                    ") " \
+                "VALUES(?,?,?,?,?)", (
+                    g.user["id"],
+                    date,
+                    time,
+                    party,
+                    "confirmed"
+                )
+            )
+            db.commit()
+            return redirect(url_for("restaurant.index"))
+        
+    return render_template("restaurant/create.html")
+
