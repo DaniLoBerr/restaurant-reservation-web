@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+    <h2>Booked Reservations</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Date</th>
+                <th>Number of Guests</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+                <tr>
+                    <td>{{ reservation.username }}</td>
+                    <td>{{ reservation.date }}</td>
+                    <td>{{ reservation.party_size }}</td>
+                    <td>{{ reservation.start_time }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
