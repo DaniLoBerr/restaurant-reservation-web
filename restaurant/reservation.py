@@ -76,3 +76,15 @@ def create():
         
     return render_template("restaurant/create.html")
 
+
+@bp.route("/update", methods=("GET", "POST"))
+@login_required
+def update():
+    return redirect(url_for("reservation.index"))
+
+
+@bp.route("/delete", methods=("GET", "POST"))
+@login_required
+def delete():
+    return redirect(url_for("reservation.index"))
+

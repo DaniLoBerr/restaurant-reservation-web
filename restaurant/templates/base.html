@@ -23,6 +23,10 @@
             <ul class="links">
                 {% if g.user %}
                     <li><span>Hi, {{ g.user["username"] }}</span></li>
+                    <li><a href="{{ url_for('reservation.index') }}">Home</a></li>
+                    <li><a href="{{ url_for('reservation.create') }}">Book</a></li>
+                    <li><a href="{{ url_for('reservation.update') }}">Update</a></li>
+                    <li><a href="{{ url_for('reservation.delete') }}">Cancel</a></li>
                     <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
                 {% else %}
                     <li><a href="{{ url_for('auth.register') }}">Register</a></li>

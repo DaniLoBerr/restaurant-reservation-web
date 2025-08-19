@@ -39,10 +39,14 @@
     flex-shrink: 0;
 }
 
-.navbar .links li a {
+.navbar .links li * {
     text-decoration: none;
     font-size: larger;
     color: #b3cde0;
+}
+
+.navbar .links li span {
+    font-style: italic;
 }
 
 .navbar .links li a:hover {
@@ -55,12 +59,20 @@
 
 
 /* Flash messages */
+
 .flash {
     font-size: larger;
     font-weight: bold;
     text-align: center;
     background-color: red;
     padding: 2vh;
+}
+
+
+/* Main */
+
+main {
+    padding: 0 10vw;
 }
 
 
