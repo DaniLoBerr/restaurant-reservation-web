@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <h2>
+        {% block title %}
+            Create
+        {% endblock %}
+    </h2>
+
+    <form
+        action="{{ url_for('reservation.create') }}"
+        class="book-form"
+        method="post"
+    >
+        <!-- Date -->
+        <label for="date">
+            Select a date:
+        </label>
+        <input
+            id="date"
+            name="date"
+            required
+            type="date" 
+        >
+
+        <!-- Time -->
+        <label for="time">
+            Select one available time slot:
+        </label>
+        <select id="time" name="time" required>
+            <option value="" disabled selected>Choose Time</option>
+            <option value="1">12:00h - 13:30h</option>
+            <option value="2">13:30h - 15:00h</option>
+            <option value="3">20:00h - 21:30h</option>
+            <option value="4">21:30h - 23:00h</option>
+        </select>
+
+        <!-- Party Size -->
+        <label for="party">
+            Enter the number of guest:
+        </label>
+        <input
+            id="party"
+            max="16"
+            min="1"
+            name="party"
+            placeholder="Enter a number (min: 1, max: 16)"
+            required
+            type="number"
+        >
+
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}

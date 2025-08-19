@@ -37,8 +37,8 @@ def create():
     if request.method == "POST":
         # Get form data
         date = request.form.get("date")
-        time = request.form.get("slot_id")
-        party = request.form.get("party_size")
+        time = request.form.get("time")
+        party = request.form.get("party")
         
         error = None
 
@@ -67,14 +67,14 @@ def create():
                     g.user["id"],
                     date,
                     time,
-                    party,
+                    int(party),
                     "confirmed"
                 )
             )
             db.commit()
-            return redirect(url_for("restaurant.index"))
+            return redirect(url_for("reservation.index"))
         
-    return render_template("restaurant/create.html")
+    return render_template("reservation/create.html")
 
 
 @bp.route("/update", methods=("GET", "POST"))

@@ -104,3 +104,14 @@ button {
     padding: 10px;
     border-radius: 5px;
 }
+
+
+/* Book */
+
+.book-form input,
+.book-form select {
+    border-radius: 5px;
+    height: 5vh;
+    width: 15vw;
+    border: solid black 2px;
+}
