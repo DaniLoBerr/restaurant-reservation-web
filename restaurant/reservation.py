@@ -34,6 +34,13 @@ def index():
 @bp.route("/create", methods=("GET", "POST"))
 @login_required
 def create():
+    """Handle reservation creation requests.
+    
+    - GET: Render a form to create a new reservation.
+    - POST: Validate the submitted data and, if valid, insert the
+    reservation into the database. Redirects to the reservation list
+    upon success, otherwise re-renders the form with an error message.
+    """
     if request.method == "POST":
         # Get form data
         date = request.form.get("date")
