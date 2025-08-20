@@ -13,8 +13,8 @@ bp = Blueprint("reservation", __name__)
 def index():
     """Display the main page of the website.
     
-    Lists all booked reservations from all users, ordered by date in
-    ascending order.
+    Lists all booked reservations from all users, ordered by date and 
+    time in ascending order.
     """
     db = get_db()
     reservations = db.execute(
@@ -82,6 +82,21 @@ def create():
             return redirect(url_for("reservation.index"))
         
     return render_template("reservation/create.html")
+
+
+@bp.route("/my-reservations")
+@login_required
+def read():
+    """Display all reservations of the authenticated user.
+    
+    Lists all booked reservations from the currently logged-in user and
+    renders them in the "reservation/read.html" template, ordered by
+    date and time in ascending order.
+    """
+    reservations = get_db().execute(
+        "SELECT * FROM reservations WHERE user_id = ?", (g.user["id"],)
+    ).fetchall()
+    return render_template("reservation/read.html", reservations=reservations)
 
 
 @bp.route("/update", methods=("GET", "POST"))
