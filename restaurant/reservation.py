@@ -94,7 +94,16 @@ def read():
     date and time in ascending order.
     """
     reservations = get_db().execute(
-        "SELECT * FROM reservations WHERE user_id = ?", (g.user["id"],)
+        "SELECT " \
+            "reservations.date, " \
+            "reservations.party_size, " \
+            "reservations.created_at, " \
+            "time_slots.start_time " \
+        "FROM reservations " \
+        "JOIN users ON users.id = reservations.user_id " \
+        "JOIN time_slots ON time_slots.id = reservations.slot_id " \
+        "WHERE user_id = ? " \
+        "ORDER BY reservations.date ASC, time_slots.label ASC", (g.user["id"],)
     ).fetchall()
     return render_template("reservation/read.html", reservations=reservations)
 
