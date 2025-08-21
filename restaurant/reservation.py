@@ -95,6 +95,7 @@ def read():
     """
     reservations = get_db().execute(
         "SELECT " \
+            "reservations.id, " \
             "reservations.date, " \
             "reservations.party_size, " \
             "reservations.created_at, " \
@@ -103,15 +104,62 @@ def read():
         "JOIN users ON users.id = reservations.user_id " \
         "JOIN time_slots ON time_slots.id = reservations.slot_id " \
         "WHERE user_id = ? " \
-        "ORDER BY reservations.date ASC, time_slots.label ASC", (g.user["id"],)
+        "ORDER BY reservations.date ASC, time_slots.label ASC",
+        (g.user["id"],)
     ).fetchall()
     return render_template("reservation/read.html", reservations=reservations)
 
 
-@bp.route("/update", methods=("GET", "POST"))
+@bp.route("/<int:id>/update", methods=("POST",))
 @login_required
-def update():
-    return redirect(url_for("reservation.index"))
+def update(id):
+    """Update an existing reservation.
+    
+    This route can be accessed in two ways:
+        - When the user clicks the "Edit" button for one of their
+        reservations on the "My Reservations" page. In this case, it
+        receives the reservation id and displays the update form.
+        - When the update form is submitted. The input data is
+        validated, and if correct, the reservation details are
+        updated in the database.
+    
+    :param id: The id number of the Reservation in the database.
+    :type id: int
+    """
+    if request.form.get("confirmation"):
+        # Get form data
+        date = request.form.get("date")
+        time = request.form.get("time")
+        party = request.form.get("party")
+        
+        error = None
+
+        # Ensure data was submitted
+        if not date:
+            error = "Date is required"
+        elif not time:
+            error = "Time is required"
+        elif not party:
+            error = "Number of Guests is required"
+
+        # Insert new reservation into the database
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                "UPDATE reservations " \
+                "SET "
+                    "date = ?, " \
+                    "slot_id = ?, " \
+                    "party_size = ? " \
+                    "WHERE id = ? ",
+                (date, time, int(party), id)
+            )
+            db.commit()
+            return redirect(url_for("reservation.read"))
+
+    return render_template("reservation/update.html", reservation_id=id)
 
 
 @bp.route("/delete", methods=("GET", "POST"))
