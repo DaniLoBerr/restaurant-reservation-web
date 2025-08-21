@@ -13,8 +13,8 @@ bp = Blueprint("reservation", __name__)
 def index():
     """Display the main page of the website.
     
-    Lists all booked reservations from all users, ordered by date in
-    ascending order.
+    Lists all booked reservations from all users, ordered by date and 
+    time in ascending order.
     """
     db = get_db()
     reservations = db.execute(
@@ -34,6 +34,13 @@ def index():
 @bp.route("/create", methods=("GET", "POST"))
 @login_required
 def create():
+    """Handle reservation creation requests.
+    
+    - GET: Render a form to create a new reservation.
+    - POST: Validate the submitted data and, if valid, insert the
+    reservation into the database. Redirects to the reservation list
+    upon success, otherwise re-renders the form with an error message.
+    """
     if request.method == "POST":
         # Get form data
         date = request.form.get("date")
@@ -75,6 +82,30 @@ def create():
             return redirect(url_for("reservation.index"))
         
     return render_template("reservation/create.html")
+
+
+@bp.route("/my-reservations")
+@login_required
+def read():
+    """Display all reservations of the authenticated user.
+    
+    Lists all booked reservations from the currently logged-in user and
+    renders them in the "reservation/read.html" template, ordered by
+    date and time in ascending order.
+    """
+    reservations = get_db().execute(
+        "SELECT " \
+            "reservations.date, " \
+            "reservations.party_size, " \
+            "reservations.created_at, " \
+            "time_slots.start_time " \
+        "FROM reservations " \
+        "JOIN users ON users.id = reservations.user_id " \
+        "JOIN time_slots ON time_slots.id = reservations.slot_id " \
+        "WHERE user_id = ? " \
+        "ORDER BY reservations.date ASC, time_slots.label ASC", (g.user["id"],)
+    ).fetchall()
+    return render_template("reservation/read.html", reservations=reservations)
 
 
 @bp.route("/update", methods=("GET", "POST"))

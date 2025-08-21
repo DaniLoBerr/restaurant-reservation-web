@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <h2>
+        {% block title %}
+            My Reservations
+        {% endblock %}
+    </h2>
+
+    {% if not reservations %}
+        <!-- https://memegen.link/ -->
+        <!-- https://knowyourmeme.com/memes/grumpy-cat -->
+        <img
+            alt="Image of a grumpy cat with a message indicating that you do not have any bookings yet."
+            class="border img-fluid"
+            src="https://api.memegen.link/images/custom/No/You have no bookings yet.jpg?background=https://i.imgur.com/CsCgN7Ll.png&width=400"
+        >
+    {% else %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Number of Guests</th>
+                    <th>Time</th>
+                    <th>Created at</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reservation in reservations %}
+                    <tr>
+                        <td>{{ reservation.date }}</td>
+                        <td>{{ reservation.party_size }}</td>
+                        <td>{{ reservation.start_time }}</td>
+                        <td>{{ reservation.created_at }}</td>
+                        <td class="option-buttons">
+                            <form action="{{ url_for('reservation.update', id=reservation.id) }}" method="post">
+                                <button id="edit" type="submit">Edit</button>
+                            </form>
+
+                            <form action="{{ url_for('reservation.delete', id=reservation.id) }}" method="post">
+                                <button id="delete" type="submit">Cancel</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
