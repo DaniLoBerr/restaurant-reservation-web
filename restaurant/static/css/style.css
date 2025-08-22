@@ -118,11 +118,19 @@ button {
 
 
 /* Read reservations */
+table {
+    max-width: 50vw;
+    text-align: center;
+}
+
 .option-buttons {
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 5px;
 }
 
 .option-buttons * {
     width: 5vw;
+    min-width: max-content;
 }
