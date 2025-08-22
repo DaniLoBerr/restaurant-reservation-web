@@ -79,7 +79,7 @@ def create():
                 )
             )
             db.commit()
-            return redirect(url_for("reservation.index"))
+            return redirect(url_for("reservation.read"))
         
     return render_template("reservation/create.html")
 
