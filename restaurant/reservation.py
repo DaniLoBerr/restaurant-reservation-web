@@ -26,6 +26,7 @@ def index():
         "FROM reservations " \
         "JOIN users ON users.id = reservations.user_id "
         "JOIN time_slots ON time_slots.id = reservations.slot_id " \
+        "WHERE status IS 'confirmed' "
         "ORDER BY reservations.date ASC, time_slots.label ASC"
     ).fetchall()
     return render_template("reservation/index.html", reservations=reservations)
@@ -79,7 +80,7 @@ def create():
                 )
             )
             db.commit()
-            return redirect(url_for("reservation.index"))
+            return redirect(url_for("reservation.read"))
         
     return render_template("reservation/create.html")
 
@@ -104,6 +105,7 @@ def read():
         "JOIN users ON users.id = reservations.user_id " \
         "JOIN time_slots ON time_slots.id = reservations.slot_id " \
         "WHERE user_id = ? " \
+        "AND status IS 'confirmed' "
         "ORDER BY reservations.date ASC, time_slots.label ASC",
         (g.user["id"],)
     ).fetchall()
@@ -162,8 +164,19 @@ def update(id):
     return render_template("reservation/update.html", reservation_id=id)
 
 
-@bp.route("/delete", methods=("GET", "POST"))
+@bp.route("/<int:id>/delete", methods=("POST",))
 @login_required
-def delete():
-    return redirect(url_for("reservation.index"))
+def delete(id):
+    """Mark a reservation as "cancelled".
+    
+    This view receives a reservation id, updates its status to
+    "cancelled" in the database, commits the change, and redirects the
+    user to the "My Reservations" page.
+    """
+    db = get_db()
+    db.execute(
+        "UPDATE reservations SET status = 'cancelled' WHERE id = ?", (id,)
+    )
+    db.commit()
+    return redirect(url_for("reservation.read"))
 
