@@ -3,7 +3,9 @@ name = "restaurant"
 version = "1.0.0"
 description = "A basic restaurant reservations manager built with Flask."
 dependencies = [
+    "email-validator",
     "flask",
+    "waitress",
 ]
 
 [build-system]
