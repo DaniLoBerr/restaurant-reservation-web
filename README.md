@@ -62,25 +62,25 @@ or via HTTP:
 git clone https://github.com/DaniLoBerr/restaurant-reservation-web.git
 ```
 
-### 2. Create and activate a virtual environment
-Create the project directory and the virtual environment:
+### 2. Go to the new directory
 ```bash
 cd restaurant-reservation-web
-python3 -m venv .venv
 ```
-Activate the virtual environment:
+
+### 3. Create and activate a virtual environment
 ```bash
+python3 -m venv .venv
 . .venv/bin/activate
 ```
 
-### 3. Install dependencies
+### 4. Install dependencies
 ```bash
 pip install -e .
 ```
 The `-e` flag installs the package in *editable mode*, useful for
 development.
 
-### 4. Initialize the database
+### 5. Initialize the database
 ```bash
 flask --app restaurant init-db
 ```
@@ -157,39 +157,44 @@ Displays all active restaurant reservations:
 ## Deployment
 You can deploy this app with a production-ready settings as follows:
 
-### 1. Build a wheel file
+### 1. Install the build package
 ```bash
 pip install build
+```
+This command install the `build` package, which is necessary to create
+wheel files.
+
+### 2. Build a wheel file
+```bash
 python3 -m build --wheel
 ```
 This wheel file will be found in dist/restaurant-1.0.0-py3-none-any.whl.
 The format is
 {project name}-{version}-{python tag} -{abi tag}-{platform tag}.
 
-### 2. Transfer and install the wheel file on server
+### 3. Transfer and install the wheel file on server
 Copy the the wheel file on another machine,
-[create a virtual environment](#1-create-and-activate-a-virtual-environment)
+[create a virtual environment](#3-create-and-activate-a-virtual-environment)
 and install it:
 ```bash
 pip install restaurant-1.0.0-py3-none-any.whl
 ```
-After installation, [initialize the database](#4-initialize-the-database).
+After installation, [initialize the database](#5-initialize-the-database).
 By default, the SQLite database will be located in
 `.venv/var/restaurant-instance`.
 
-### 3. Configure the Secret Key
+### 4. Configure the Secret Key
 By default, in development mode, the secret key is "dev".
 For production, generate a secure key:
 ```bash
 echo "SECRET_KEY = \"$(python -c 'import secrets; print(secrets.token_hex())')\"" > .venv/var/restaurant-instance/config.py 
 ```
 
-### 4. Run with a production server
+### 5. Run with a production server
 Install a production-ready WSGI server such as **waitress**:
 ```bash
 pip install waitress
 ```
-
 Run the application factory:
 ```bash
 waitress-serve --call 'restaurant:create_app'
@@ -208,3 +213,5 @@ consider serving using more robust WSGI servers*.
 ## License
 This project is licensed under the
 [MIT License](https://choosealicense.com/licenses/mit/).
+
+[Back to top](#restaurant-reservation-web-app)
