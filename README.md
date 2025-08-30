@@ -52,38 +52,37 @@ interface.
 ### Prerequisites
 The following instructions assume a bash-like CLI and Python 3.12.3.
 
-### 1. Create and activate a virtual environment
-Create the project directory and the virtual environment:
-```bash
-$ mkdir restaurant-reservation-web
-$ cd restaurant-reservation-web
-$ python3 -m venv .venv
-```
-Activate the virtual environment:
-```bash
-$ . .venv/bin/activate
-```
-
-### 2. Clone the repository
+### 1. Clone the repository
 Clone via SSH:
 ```bash
-$ git clone git@github.com:DaniLoBerr/restaurant-reservation-web.git
+git clone git@github.com:DaniLoBerr/restaurant-reservation-web.git
 ```
 or via HTTP:
 ```bash
-$ git clone https://github.com/DaniLoBerr/restaurant-reservation-web.git
+git clone https://github.com/DaniLoBerr/restaurant-reservation-web.git
+```
+
+### 2. Create and activate a virtual environment
+Create the project directory and the virtual environment:
+```bash
+cd restaurant-reservation-web
+python3 -m venv .venv
+```
+Activate the virtual environment:
+```bash
+. .venv/bin/activate
 ```
 
 ### 3. Install dependencies
 ```bash
-$ pip install -e .
+pip install -e .
 ```
 The `-e` flag installs the package in *editable mode*, useful for
 development.
 
 ### 4. Initialize the database
 ```bash
-$ flask --app restaurant --init-db
+flask --app restaurant init-db
 ```
 The SQLite database will be created in the `instance/` directory.
 
@@ -160,8 +159,8 @@ You can deploy this app with a production-ready settings as follows:
 
 ### 1. Build a wheel file
 ```bash
-$ pip install build
-$ python3 -m build --wheel
+pip install build
+python3 -m build --wheel
 ```
 This wheel file will be found in dist/restaurant-1.0.0-py3-none-any.whl.
 The format is
@@ -172,7 +171,7 @@ Copy the the wheel file on another machine,
 [create a virtual environment](#1-create-and-activate-a-virtual-environment)
 and install it:
 ```bash
-$ pip install restaurant-*.whl
+pip install restaurant-1.0.0-py3-none-any.whl
 ```
 After installation, [initialize the database](#4-initialize-the-database).
 By default, the SQLite database will be located in
@@ -182,19 +181,18 @@ By default, the SQLite database will be located in
 By default, in development mode, the secret key is "dev".
 For production, generate a secure key:
 ```bash
-echo "SECRET_KEY = \"$(python -c 'import secrets; print(secrets.token_hex())')\"" > \
-.venv/var/restaurant-instance/config.py 
+echo "SECRET_KEY = \"$(python -c 'import secrets; print(secrets.token_hex())')\"" > .venv/var/restaurant-instance/config.py 
 ```
 
 ### 4. Run with a production server
 Install a production-ready WSGI server such as **waitress**:
 ```bash
-$ pip install waitress
+pip install waitress
 ```
 
 Run the application factory:
 ```bash
-$ waitress-serve --call 'restaurant:create_app'
+waitress-serve --call 'restaurant:create_app'
 ```
 The app will be available at: http://0.0.0.0:8080
 
